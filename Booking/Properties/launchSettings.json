@@ -3,15 +3,15 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:57378/",
-      "sslPort": 0
+      "applicationUrl": "https://localhost:44308/",
+      "sslPort": 44308
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/booking",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -19,7 +19,7 @@
     "Booking": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/booking",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

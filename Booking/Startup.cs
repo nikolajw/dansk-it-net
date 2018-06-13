@@ -1,4 +1,5 @@
 ﻿using Booking.Controllers;
+using Booking.ExternalServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,9 +21,10 @@ namespace Booking
         {
             services.AddMvc();
             
+            
             services.AddSingleton<IBookingRepository, BookingRepository>();
             services.AddTransient<EventPublisherClient>();
-            services.AddTransient<AvailablityService>();
+            services.AddTransient<AvailabilityClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

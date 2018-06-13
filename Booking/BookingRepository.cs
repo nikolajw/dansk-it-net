@@ -49,7 +49,9 @@ namespace Booking.Controllers
                     BookingId = 1,
                     EndDate = DateTimeOffset.Now.Date.AddDays(2),
                     StartDate = DateTimeOffset.Now.Date.AddDays(1),
-                    RoomType = RoomType.Double
+                    RoomType = RoomType.Double,
+                    NumberOfGuests = 2,
+                    Note = "Allergic to cats"
                 });
             _bookings.Add(
                 new BookingModel()
@@ -57,7 +59,9 @@ namespace Booking.Controllers
                     BookingId = 2,
                     EndDate = DateTimeOffset.Now.Date.AddDays(4),
                     StartDate = DateTimeOffset.Now.Date.AddDays(3),
-                    RoomType = RoomType.Single
+                    RoomType = RoomType.Single,
+                    NumberOfGuests = 1,
+                    Note = "Bottle of whiskey and bucket of ice on arrival"
                 });
             _bookings.Add(
                 new BookingModel()
@@ -65,7 +69,9 @@ namespace Booking.Controllers
                     BookingId = 3,
                     EndDate = DateTimeOffset.Now.Date.AddDays(6),
                     StartDate = DateTimeOffset.Now.Date.AddDays(4),
-                    RoomType = RoomType.Suite
+                    RoomType = RoomType.Suite,
+                    NumberOfGuests = 2,
+                    Note = "We sleep in separate beds"
                 });
             _bookings.Add(
                 new BookingModel()
@@ -73,7 +79,9 @@ namespace Booking.Controllers
                     BookingId = 4,
                     EndDate = DateTimeOffset.Now.Date.AddDays(6),
                     StartDate = DateTimeOffset.Now.Date.AddDays(5),
-                    RoomType = RoomType.Double
+                    RoomType = RoomType.Double,
+                    NumberOfGuests = 2,
+                    Note = "Need parking space"
                 });
         }
     }

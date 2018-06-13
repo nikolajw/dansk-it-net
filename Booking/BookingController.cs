@@ -7,11 +7,11 @@ namespace Booking.Controllers
     [Route("api/[controller]")]
     public class BookingController : Controller
     {
-        private readonly BookingRepository repository;
+        private readonly IBookingRepository repository;
         private readonly EventPublisherClient eventPublisher;
         private readonly AvailabilityClient availabilityService;
 
-        public BookingController(BookingRepository repository,
+        public BookingController(IBookingRepository repository,
                                  EventPublisherClient eventPublisher,
                                  AvailabilityClient availabilityService)
         {
