@@ -17,12 +17,11 @@
     <ItemGroup>
       <DocFile Include="bin\*\*\*.xml" />
     </ItemGroup>
-    <Copy SourceFiles="@(DocFile)"
-          DestinationFolder="$(PublishDir)"
-          SkipUnchangedFiles="false" />
+    <Copy SourceFiles="@(DocFile)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="false" />
   </Target>
 
   <ItemGroup>
+    <PackageReference Include="CorrelationId" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Swashbuckle" Version="5.6.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.5.0" />
