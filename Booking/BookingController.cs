@@ -1,9 +1,11 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Booking.Controllers;
 using Booking.ExternalServices;
+using CorrelationId;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Booking.Controllers
+namespace Booking
 {
     [Route("api/[controller]")]
     public class BookingController : Controller
@@ -11,14 +13,17 @@ namespace Booking.Controllers
         private readonly IBookingRepository repository;
         private readonly EventPublisherClient eventPublisher;
         private readonly AvailabilityClient availabilityService;
+        private readonly string correlationId;
 
         public BookingController(IBookingRepository repository,
                                  EventPublisherClient eventPublisher,
-                                 AvailabilityClient availabilityService)
+                                 AvailabilityClient availabilityService,
+                                 ICorrelationContextAccessor correlationContext)
         {
             this.repository = repository;
             this.eventPublisher = eventPublisher;
             this.availabilityService = availabilityService;
+            correlationId = correlationContext.CorrelationContext.CorrelationId;
         }
 
         /// <summary>
@@ -34,7 +39,7 @@ namespace Booking.Controllers
 
             var result = repository.Save(booking);
 
-            eventPublisher.Publish(new BookingCreatedEvent(booking));
+            eventPublisher.Publish(new BookingCreatedEvent(booking, correlationId));
 
             return Created($"/api/booking/{result}", booking);
         }
@@ -53,7 +58,7 @@ namespace Booking.Controllers
 
             var result = repository.Update(booking);
 
-            eventPublisher.Publish(new BookingUpdatedEvent(booking));
+            eventPublisher.Publish(new BookingUpdatedEvent(booking,correlationId));
 
             return Ok(result);
         }
@@ -68,7 +73,7 @@ namespace Booking.Controllers
         {
             repository.Delete(id);
 
-            eventPublisher.Publish(new BookingCancelledEvent(id));
+            eventPublisher.Publish(new BookingCancelledEvent(id, correlationId));
 
             return NoContent();
         }

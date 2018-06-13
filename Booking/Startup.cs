@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Booking.Controllers;
 using Booking.ExternalServices;
+using CorrelationId;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace Booking
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCorrelationId();
 
             services.AddSwaggerGen(c =>
             {
@@ -51,6 +53,11 @@ namespace Booking
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", appName);
             });
 
+            app.UseCorrelationId(new CorrelationIdOptions { 
+                Header = "X-Correlation-ID", 
+                IncludeInResponse = true
+            });
+            
             app.UseMvc();
         }
     }
