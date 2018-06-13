@@ -76,8 +76,6 @@ namespace Booking.Controllers
                     RoomType = RoomType.Double
                 });
         }
-
-
     }
 
     public interface IBookingRepository
