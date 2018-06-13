@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Booking.ExternalServices;
 
@@ -20,7 +21,11 @@ namespace Booking.Controllers
             this.availabilityService = availabilityService;
         }
 
-        // POST api/booking
+        /// <summary>
+        /// Books a room, subject to room availability
+        /// </summary>
+        /// <param name="booking">The requirements for the booking</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Create([FromBody]BookingModel booking)
         {
@@ -34,7 +39,12 @@ namespace Booking.Controllers
             return Created($"/api/booking/{result}", booking);
         }
 
-        // PUT api/booking/5
+        /// <summary>
+        /// Updates a booking, subject to room availability
+        /// </summary>
+        /// <param name="id">The booking ID</param>
+        /// <param name="booking"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody]BookingModel booking)
         {
@@ -48,7 +58,11 @@ namespace Booking.Controllers
             return Ok(result);
         }
 
-        // DELETE api/booking/5
+        /// <summary>
+        /// Cancels a booking
+        /// </summary>
+        /// <param name="id">The booking ID</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Cancel(int id)
         {
@@ -59,16 +73,23 @@ namespace Booking.Controllers
             return NoContent();
         }
 
-        // GET api/booking
+        /// <summary>
+        /// Fetches all bookings today or in the future
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult FetchAll()
         {
-            var allBookings = repository.GetAll();
+            var allBookings = repository.GetAll().Where(b => b.StartDate >= DateTimeOffset.Now.Date);
 
             return Ok(allBookings);
         }
 
-        // GET api/booking/5
+        /// <summary>
+        /// Fetches a booking
+        /// </summary>
+        /// <param name="id">ID of the booking to fetch</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult FetchOne(int id)
         {

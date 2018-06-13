@@ -1,14 +1,20 @@
-﻿using Booking.Controllers;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Booking.Controllers;
 using Booking.ExternalServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Booking
 {
     public class Startup
     {
+        private string appName = "Hôtel - Booking Service API";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -20,7 +26,15 @@ namespace Booking
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = appName, Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             
             services.AddSingleton<IBookingRepository, BookingRepository>();
             services.AddTransient<EventPublisherClient>();
@@ -30,10 +44,12 @@ namespace Booking
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", appName);
+            });
 
             app.UseMvc();
         }
