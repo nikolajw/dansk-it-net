@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Booking.Controllers
+namespace Booking
 {
     public class BookingRepository : IBookingRepository
     {
-        List<BookingModel> _bookings = new List<BookingModel>();
+        readonly List<BookingModel> _bookings = new List<BookingModel>();
 
         public BookingRepository()
         {
