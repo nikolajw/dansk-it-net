@@ -1,5 +1,4 @@
-﻿using Booking.Controllers;
-using Booking.ExternalServices;
+﻿using Booking.ExternalServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

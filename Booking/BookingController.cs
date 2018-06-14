@@ -2,7 +2,7 @@
 using System.Linq;
 using Booking.ExternalServices;
 
-namespace Booking.Controllers
+namespace Booking
 {
     [Route("api/[controller]")]
     public class BookingController : Controller
