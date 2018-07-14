@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Booking.Controllers;
-using Booking.ExternalServices;
+using Booking.Booking;
 using CorrelationId;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,8 +38,6 @@ namespace Booking
             });
             
             services.AddSingleton<IBookingRepository, BookingRepository>();
-            services.AddTransient<EventPublisherClient>();
-            services.AddTransient<AvailabilityClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

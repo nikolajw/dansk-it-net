@@ -1,4 +1,6 @@
-﻿namespace Booking
+﻿using Booking.Booking;
+
+namespace Booking
 {
     public class Event<T>
     {

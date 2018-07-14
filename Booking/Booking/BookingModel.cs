@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Booking
+namespace Booking.Booking
 {
     public class BookingModel
     {

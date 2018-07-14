@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Booking.Controllers
+namespace Booking.Booking
 {
     public class BookingRepository : IBookingRepository
     {
-        List<BookingModel> _bookings = new List<BookingModel>();
+        private readonly List<BookingModel> bookings = new List<BookingModel>();
 
         public BookingRepository()
         {
@@ -15,14 +15,14 @@ namespace Booking.Controllers
 
         public IEnumerable<BookingModel> GetAll()
         {
-            return _bookings.ToArray();
+            return bookings.ToArray();
         }
 
         public int Save(BookingModel booking)
         {
-            int id = _bookings.Max(b => b.BookingId) + 1;
+            int id = bookings.Max(b => b.BookingId) + 1;
             booking.BookingId = id;
-            _bookings.Add(booking);
+            bookings.Add(booking);
 
             return id;
         }
@@ -37,13 +37,13 @@ namespace Booking.Controllers
 
         public void Delete(int bookingId)
         {
-            var bookingModel = _bookings.FirstOrDefault(b => b.BookingId == bookingId);
-            _bookings.Remove(bookingModel);
+            var bookingModel = bookings.FirstOrDefault(b => b.BookingId == bookingId);
+            bookings.Remove(bookingModel);
         }
 
         private void InitRepo()
         {
-            _bookings.Add(
+            bookings.Add(
                 new BookingModel()
                 {
                     BookingId = 1,
@@ -53,7 +53,7 @@ namespace Booking.Controllers
                     NumberOfGuests = 2,
                     Note = "Allergic to cats"
                 });
-            _bookings.Add(
+            bookings.Add(
                 new BookingModel()
                 {
                     BookingId = 2,
@@ -63,7 +63,7 @@ namespace Booking.Controllers
                     NumberOfGuests = 1,
                     Note = "Bottle of whiskey and bucket of ice on arrival"
                 });
-            _bookings.Add(
+            bookings.Add(
                 new BookingModel()
                 {
                     BookingId = 3,
@@ -73,7 +73,7 @@ namespace Booking.Controllers
                     NumberOfGuests = 2,
                     Note = "We sleep in separate beds"
                 });
-            _bookings.Add(
+            bookings.Add(
                 new BookingModel()
                 {
                     BookingId = 4,
