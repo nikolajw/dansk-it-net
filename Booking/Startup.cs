@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Booking.Booking;
 using CorrelationId;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,11 +23,11 @@ namespace Booking
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddCorrelationId();
+            services.AddMediatR();
 
             services.AddSwaggerGen(c =>
             {

@@ -17,7 +17,9 @@ namespace Booking
         }
         public async Task<IActionResult> GetAvailableRooms(DateTimeOffset from, DateTimeOffset to)
         {
-            return null;
+            var report = await reader.GetAvailabilities(from, to);
+            
+            return Ok(report);
         }
     }
 }

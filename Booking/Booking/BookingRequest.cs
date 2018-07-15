@@ -1,10 +1,11 @@
 ﻿using System;
+using Booking.Room;
 
 namespace Booking.Booking
 {
-    public class BookingModel
+    public class BookingRequest
     {
-        public int BookingId { get; set; }
+        public int RequestId { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
 
@@ -15,12 +16,5 @@ namespace Booking.Booking
         public int NumberOfGuests { get; set; }
 
         public string Note { get; set; }
-    }
-
-    public enum RoomType
-    {
-        Single,
-        Double,
-        Suite
     }
 }

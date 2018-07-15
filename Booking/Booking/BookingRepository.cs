@@ -1,35 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Booking.Room;
 
 namespace Booking.Booking
 {
     public class BookingRepository : IBookingRepository
     {
-        private readonly List<BookingModel> bookings = new List<BookingModel>();
+        private readonly List<BookingRequest> bookings = new List<BookingRequest>();
 
         public BookingRepository()
         {
             InitRepo();
         }
 
-        public IEnumerable<BookingModel> GetAll()
+        public IEnumerable<BookingRequest> GetAll()
         {
             return bookings.ToArray();
         }
 
-        public int Save(BookingModel booking)
+        public int Save(BookingRequest booking)
         {
-            int id = bookings.Max(b => b.BookingId) + 1;
-            booking.BookingId = id;
+            int id = bookings.Max(b => b.RequestId) + 1;
+            booking.RequestId = id;
             bookings.Add(booking);
 
             return id;
         }
 
-        public BookingModel Update(BookingModel booking)
+        public BookingRequest Update(BookingRequest booking)
         {
-            Delete(booking.BookingId);
+            Delete(booking.RequestId);
             Save(booking);
 
             return booking;
@@ -37,16 +38,16 @@ namespace Booking.Booking
 
         public void Delete(int bookingId)
         {
-            var bookingModel = bookings.FirstOrDefault(b => b.BookingId == bookingId);
+            var bookingModel = bookings.FirstOrDefault(b => b.RequestId == bookingId);
             bookings.Remove(bookingModel);
         }
 
         private void InitRepo()
         {
             bookings.Add(
-                new BookingModel()
+                new BookingRequest()
                 {
-                    BookingId = 1,
+                    RequestId = 1,
                     EndDate = DateTimeOffset.Now.Date.AddDays(2),
                     StartDate = DateTimeOffset.Now.Date.AddDays(1),
                     RoomType = RoomType.Double,
@@ -54,9 +55,9 @@ namespace Booking.Booking
                     Note = "Allergic to cats"
                 });
             bookings.Add(
-                new BookingModel()
+                new BookingRequest()
                 {
-                    BookingId = 2,
+                    RequestId = 2,
                     EndDate = DateTimeOffset.Now.Date.AddDays(4),
                     StartDate = DateTimeOffset.Now.Date.AddDays(3),
                     RoomType = RoomType.Single,
@@ -64,9 +65,9 @@ namespace Booking.Booking
                     Note = "Bottle of whiskey and bucket of ice on arrival"
                 });
             bookings.Add(
-                new BookingModel()
+                new BookingRequest()
                 {
-                    BookingId = 3,
+                    RequestId = 3,
                     EndDate = DateTimeOffset.Now.Date.AddDays(6),
                     StartDate = DateTimeOffset.Now.Date.AddDays(4),
                     RoomType = RoomType.Suite,
@@ -74,9 +75,9 @@ namespace Booking.Booking
                     Note = "We sleep in separate beds"
                 });
             bookings.Add(
-                new BookingModel()
+                new BookingRequest()
                 {
-                    BookingId = 4,
+                    RequestId = 4,
                     EndDate = DateTimeOffset.Now.Date.AddDays(6),
                     StartDate = DateTimeOffset.Now.Date.AddDays(5),
                     RoomType = RoomType.Double,
@@ -88,11 +89,11 @@ namespace Booking.Booking
 
     public interface IBookingRepository
     {
-        IEnumerable<BookingModel> GetAll();
+        IEnumerable<BookingRequest> GetAll();
 
-        int Save(BookingModel booking);
+        int Save(BookingRequest booking);
 
-        BookingModel Update(BookingModel booking);
+        BookingRequest Update(BookingRequest booking);
 
         void Delete(int bookingId);
     }

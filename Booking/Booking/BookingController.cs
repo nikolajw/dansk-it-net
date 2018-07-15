@@ -1,25 +1,26 @@
-﻿using System;
-using System.Linq;
-using Booking.Availability;
+﻿using Booking.Availability;
 using Booking.Booking;
 using CorrelationId;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Booking
 {
     [Route("[controller]")]
     public class BookingController : Controller
     {
-        private readonly IBookingRepository repository;
         private readonly IAvailabilityReader availabilityReader;
+        private readonly IMediator mediator;
         private readonly string correlationId;
 
-        public BookingController(IBookingRepository repository,
-                                 IAvailabilityReader availabilityReader,
-                                 ICorrelationContextAccessor correlationContext)
+        public BookingController(IAvailabilityReader availabilityReader,
+                                 ICorrelationContextAccessor correlationContext,
+                                 IMediator mediator)
         {
-            this.repository = repository;
             this.availabilityReader = availabilityReader;
+            this.mediator = mediator;
             correlationId = correlationContext.CorrelationContext.CorrelationId;
         }
 
@@ -29,31 +30,19 @@ namespace Booking
         /// <param name="booking">The requirements for the booking</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Create([FromBody]BookingModel booking)
+        public async Task<IActionResult> BookARoom([FromBody]BookingRequest booking)
         {
-            if (!availabilityReader.IsAvailable(booking.StartDate, booking.EndDate, booking.RoomType))
+            if (!await availabilityReader.IsAvailable(booking.StartDate, booking.EndDate, booking.RoomType))
                 return BadRequest("Dates and/or roomType not available");
 
-            var bookingId = Guid.NewGuid();
+            var bookingRequestId = Guid.NewGuid();
 
-            return CreatedAtRoute("FetchBooking", new {id = bookingId}, booking);
-        }
+            var bookingRequestedEvent =
+                new BookingRequestedEvent(booking, bookingRequestId);
 
-        /// <summary>
-        /// Updates a booking, subject to room availability
-        /// </summary>
-        /// <param name="id">The booking ID</param>
-        /// <param name="booking"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody]BookingModel booking)
-        {
-            if (!availabilityReader.IsAvailable(booking.StartDate, booking.EndDate, booking.RoomType))
-                return BadRequest("Dates and/or roomType not available");
+            await mediator.Publish(bookingRequestedEvent);
 
-            var result = repository.Update(booking);
-
-            return Ok(result);
+            return CreatedAtRoute("FetchStatus", new {id = bookingRequestId}, booking);
         }
 
         /// <summary>
@@ -64,34 +53,7 @@ namespace Booking
         [HttpDelete("{id}")]
         public IActionResult Cancel(int id)
         {
-            repository.Delete(id);
-
             return NoContent();
-        }
-
-        /// <summary>
-        /// Fetches all bookings today or in the future
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult FetchAll()
-        {
-            var allBookings = repository.GetAll().Where(b => b.StartDate >= DateTimeOffset.Now.Date);
-
-            return Ok(allBookings);
-        }
-
-        /// <summary>
-        /// Fetches a booking
-        /// </summary>
-        /// <param name="id">ID of the booking to fetch</param>
-        /// <returns></returns>
-        [HttpGet("{id}", Name = "FetchBooking")]
-        public IActionResult FetchOne(int id)
-        {
-            var result = repository.GetAll().FirstOrDefault(b => b.BookingId == id);
-
-            return Ok(result);
         }
     }
 }

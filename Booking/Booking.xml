@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Booking</name>
+    </assembly>
+    <members>
+        <member name="M:Booking.BookingController.Create(Booking.Booking.BookingRequest)">
+            <summary>
+            Books a room, subject to room availability
+            </summary>
+            <param name="booking">The requirements for the booking</param>
+            <returns></returns>
+        </member>
+        <member name="M:Booking.BookingController.Update(System.Int32,Booking.Booking.BookingRequest)">
+            <summary>
+            Updates a booking, subject to room availability
+            </summary>
+            <param name="id">The booking ID</param>
+            <param name="booking"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Booking.BookingController.Cancel(System.Int32)">
+            <summary>
+            Cancels a booking
+            </summary>
+            <param name="id">The booking ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Booking.BookingController.FetchAll">
+            <summary>
+            Fetches all bookings today or in the future
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Booking.BookingController.FetchOne(System.Int32)">
+            <summary>
+            Fetches a booking
+            </summary>
+            <param name="id">ID of the booking to fetch</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
