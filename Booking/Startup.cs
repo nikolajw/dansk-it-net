@@ -28,6 +28,7 @@ namespace Booking
             services.AddMvc();
             services.AddCorrelationId();
             services.AddMediatR();
+            services.AddHealthChecks();
 
             services.AddSwaggerGen(c =>
             {
@@ -55,7 +56,8 @@ namespace Booking
                 Header = "X-Correlation-ID", 
                 IncludeInResponse = true
             });
-            
+
+            app.UseHealthChecks("/health");
             app.UseMvc();
         }
     }
